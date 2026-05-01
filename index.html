@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GuardianAlert</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+/* Safety theme gradient background */
+
+body{
+background: linear-gradient(135deg,#0f172a,#1e293b,#dc2626);
+min-height:100vh;
+font-family:sans-serif;
+}
+
+/* lighter overlay */
+
+.overlay{
+background:rgba(255,255,255,0.05);
+min-height:100vh;
+}
+
+/* glass effect */
+
+.glass{
+backdrop-filter:blur(14px);
+background:rgba(255,255,255,0.9);
+}
+
+/* SOS animation */
+
+@keyframes pulseSOS{
+0%{transform:scale(1);box-shadow:0 0 0 0 rgba(220,38,38,0.7);}
+70%{transform:scale(1.07);box-shadow:0 0 0 28px rgba(220,38,38,0);}
+100%{transform:scale(1);box-shadow:0 0 0 0 rgba(220,38,38,0);}
+}
+
+.sos-animate{
+animation:pulseSOS 2s infinite;
+}
+
+</style>
+</head>
+
+<body class="font-sans">
+
+<div class="overlay">
+
+<!-- HEADER -->
+
+<div class="bg-red-600 text-white p-4 shadow-lg flex justify-between items-center">
+
+<h1 class="text-xl font-bold">🛡 GuardianAlert</h1>
+
+<p class="text-sm">Emergency Safety System</p>
+
+</div>
+
+
+<!-- LOGIN SCREEN -->
+
+<div id="login-screen" class="min-h-screen flex items-center justify-center p-6">
+
+<div class="max-w-md w-full glass rounded-3xl shadow-xl p-8 text-center">
+
+<img src="https://cdn-icons-png.flaticon.com/512/565/565547.png"
+class="w-20 mx-auto mb-4">
+
+<h1 class="text-3xl font-bold text-rose-600 mb-4">GuardianAlert</h1>
+
+<p class="text-gray-600 mb-6">
+Your personal safety companion
+</p>
+
+<input id="userPhone" type="tel"
+placeholder="Enter your mobile number"
+class="w-full p-4 border rounded-xl mb-4 focus:ring-2 focus:ring-red-400">
+
+<button onclick="saveUser()"
+class="w-full bg-rose-600 hover:bg-rose-700 transition text-white font-bold py-4 rounded-xl">
+
+Login
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- CONTACT SCREEN -->
+
+<div id="contact-screen" class="hidden min-h-screen flex items-center justify-center p-6">
+
+<div class="max-w-md w-full glass rounded-3xl shadow-xl p-8">
+
+<h2 class="text-2xl font-bold mb-2 text-center">Emergency Contacts</h2>
+
+<p class="text-gray-600 text-center mb-6">
+Add people who should receive alerts
+</p>
+
+<div class="space-y-3 mb-6">
+
+<input type="tel" class="contact-input w-full p-3 border rounded-lg" placeholder="👤 Contact 1">
+<input type="tel" class="contact-input w-full p-3 border rounded-lg" placeholder="👤 Contact 2">
+<input type="tel" class="contact-input w-full p-3 border rounded-lg" placeholder="👤 Contact 3">
+<input type="tel" class="contact-input w-full p-3 border rounded-lg" placeholder="👤 Contact 4">
+<input type="tel" class="contact-input w-full p-3 border rounded-lg" placeholder="👤 Contact 5">
+
+</div>
+
+<button onclick="saveContacts()"
+class="w-full bg-black hover:bg-gray-800 transition text-white py-4 rounded-xl">
+
+Save Contacts
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- DASHBOARD -->
+
+<div id="dashboard-screen"
+class="hidden min-h-screen flex flex-col items-center p-6 text-center">
+
+<img src="https://cdn-icons-png.flaticon.com/512/483/483361.png"
+class="w-24 mb-4">
+
+<h2 class="text-xl font-semibold text-white mb-6">
+Tap SOS in case of emergency
+</h2>
+
+
+<!-- SOS BUTTON -->
+
+<button id="sosButton"
+onclick="sendSOS()"
+class="w-64 h-64 bg-red-600 hover:bg-red-700 transition rounded-full text-white text-5xl font-black shadow-2xl sos-animate">
+
+SOS
+
+</button>
+
+<p id="status"
+class="mt-6 text-gray-200 font-medium text-center">
+
+Press SOS to alert emergency contacts
+
+</p>
+
+
+<div id="map"
+class="mt-6 w-full max-w-md h-64 rounded-xl overflow-hidden shadow-lg"></div>
+
+
+<!-- SAFETY TIPS -->
+
+<div class="mt-8 max-w-md w-full glass p-6 rounded-2xl shadow">
+
+<h3 class="font-bold mb-3">Safety Tips</h3>
+
+<ul class="text-sm space-y-2">
+
+<li>• Share your location when travelling alone</li>
+<li>• Keep emergency contacts updated</li>
+<li>• Stay aware of surroundings</li>
+<li>• Use SOS when feeling unsafe</li>
+
+</ul>
+
+</div>
+
+
+<button onclick="resetApp()"
+class="mt-6 text-sm text-gray-200 underline">
+
+Reset App
+
+</button>
+
+</div>
+
+
+<script>
+
+const alarm = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+
+window.onload = () => {
+
+const phone = localStorage.getItem('userPhone');
+const contacts = localStorage.getItem('emergencyContacts');
+
+if(phone && contacts){
+
+document.getElementById('login-screen').classList.add('hidden');
+document.getElementById('dashboard-screen').classList.remove('hidden');
+
+}
+
+};
+
+function saveUser(){
+
+const phone = document.getElementById('userPhone').value;
+
+if(!phone){
+alert("Enter your phone");
+return;
+}
+
+localStorage.setItem('userPhone', phone);
+
+document.getElementById('login-screen').classList.add('hidden');
+document.getElementById('contact-screen').classList.remove('hidden');
+
+}
+
+function saveContacts(){
+
+const inputs = document.querySelectorAll('.contact-input');
+
+const contacts = Array.from(inputs)
+.map(i => i.value.trim())
+.filter(v => v !== "");
+
+if(contacts.length < 1){
+alert("Add at least one contact");
+return;
+}
+
+localStorage.setItem('emergencyContacts', JSON.stringify(contacts));
+
+document.getElementById('contact-screen').classList.add('hidden');
+document.getElementById('dashboard-screen').classList.remove('hidden');
+
+}
+
+function sendSOS(){
+
+const status = document.getElementById('status');
+const contacts = JSON.parse(localStorage.getItem('emergencyContacts'));
+
+status.innerText = "Detecting location...";
+
+alarm.play();
+
+navigator.geolocation.getCurrentPosition((pos)=>{
+
+const lat = pos.coords.latitude;
+const lon = pos.coords.longitude;
+
+const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
+
+document.getElementById("map").innerHTML =
+`<iframe width="100%" height="250"
+src="https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed">
+</iframe>`;
+
+const message = `🚨 EMERGENCY! I need help. My location: ${mapLink}`;
+
+status.innerText = "Opening WhatsApp alerts...";
+
+contacts.forEach((number,index)=>{
+
+const cleanNumber = number.replace(/\D/g,'');
+
+const url = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+
+setTimeout(()=>{
+window.open(url,"_blank");
+}, index * 1200);
+
+});
+
+});
+
+}
+
+function resetApp(){
+
+localStorage.clear();
+location.reload();
+
+}
+
+</script>
+
+</div>
+
+</body>
+</html>
