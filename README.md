@@ -1,10 +1,10 @@
 ## 📸 Project Demo
 ![Login Screen](https://your-image-link)
-<img width="1361" height="662" alt="Sc6" src="https://github.com/user-attachments/assets/c3a4aa16-392c-4b13-89a3-c147f0aab731" />
+<img width="770" height="587" alt="Sc1" src="https://github.com/user-attachments/assets/4b16d07c-a4c1-4a0d-b7c4-f1d190ffe5db" />
 ![SOS Alert Screen](https://your-image-link)
 <img width="1324" height="616" alt="Sc3" src="https://github.com/user-attachments/assets/b6b10706-02d5-4a2a-8e44-23f309b2b1f6" />
-![Location Alert Screen]
-<img width="770" height="587" alt="Sc1" src="https://github.com/user-attachments/assets/4b16d07c-a4c1-4a0d-b7c4-f1d190ffe5db" />
+![Location Alert Screen](https://your-image-link)
+<img width="1361" height="662" alt="Sc6" src="https://github.com/user-attachments/assets/c3a4aa16-392c-4b13-89a3-c147f0aab731" />
 # 🚨 AI-Powered Women's Emergency Safety Alert System
 
 ---
